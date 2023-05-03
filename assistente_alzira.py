@@ -84,6 +84,8 @@ def comando_voz_usuario():
             maquina.runAndWait()
             continue
 
+
+
 # Chamada da função para execução da aplicação
 if __name__ == "__main__":
     comando_voz_usuario() 
