@@ -1,0 +1,49 @@
+import unittest
+from assistente_alzira import *
+import json
+
+# Caso Queira realizar os teste por um json de testes
+teste_json = True
+# caminho que está buscando o json
+COMANDOS_ASSISTENTE = "D:\\wamp64\\www\\python\\ASSISTENTE VIRTUAL ALZIRA\\teste.json"
+    
+class TestaAlzira(unittest.TestCase):
+    while True:     
+        # Se estiver definido para fazer os testes com json    
+            if teste_json:
+                with open(COMANDOS_ASSISTENTE, 'r') as f:
+                    testes = json.load(f)
+                
+                for comando in testes['comandos']:
+                # Fazer algo com a pergunta, como processar com sua IA
+                    print(comando)
+                    comando = str('' + comando)
+                    mensagens.append({"role": "user", "content": comando})
+                    
+                    if comando.startswith("sair") or comando.startswith("encerrar") or comando.startswith("tchau"):
+                        maquina.say('A pergunta foi: ' + comando)
+                        print('Até a próxima')
+                        maquina.say('Até a próxima!')
+                        maquina.runAndWait() 
+                        teste_json = False
+                        break
+                    else:
+                        resultado = gerar_resposta(mensagens)
+                        maquina.say('A pergunta foi: ' + comando)
+                        print("Alzira:", resultado[0])
+                        
+                        #Comentar caso queira que a Alzira não leia
+                        maquina.say('A resposta é: ' + resultado[0])
+                        maquina.say('Próximo teste!')
+                        maquina.runAndWait() 
+
+if __name__ == "__main__":
+    carregador = unittest.TestLoader()
+    testes = unittest.TestSuite()
+
+    testes.addTest(carregador.loadTestsFromTestCase(TestaAlzira))
+
+    executor = unittest.TextTestRunner()
+    executor.run(testes)
+
+             
